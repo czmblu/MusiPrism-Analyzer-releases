@@ -44,6 +44,12 @@ You load a song and the application breaks it down into the instruments that
 make it up, measures its tempo and key, estimates its genre and — if the track
 is catalogued — retrieves its artist and album.
 
+The reading part comes first and on its own: tempo, key, genre, similar tracks
+and lyrics appear after about twenty seconds, and you can already play the song
+through the equalizer. Splitting it into instruments takes longer than all of
+that put together, so it waits until you ask for it — by switching to the full
+view, or with the button on the instruments card.
+
 It runs entirely on your computer: the audio is never uploaded to any external
 service. The only network requests are the acoustic fingerprint lookup on
 AcoustID and MusicBrainz (metadata only, not the audio) and the model downloads
@@ -160,10 +166,17 @@ the bottom, at full width.
 sound (waveform and spectrogram). You switch between them with the toggle at the
 top right, and the choice is remembered.
 
-Even in the compact view the separated stems are produced and loaded, just not
-shown: they are the ones providing the audio, so without them the equalizer
-would have nothing to act on. That is why the equalizer card carries a reduced
-set of playback controls.
+**The split is also where the analysis stops.** Everything in the compact view
+is computed straight away; separating the instruments — which takes longer than
+all the rest together — only starts when you switch to the full view or press
+the button on the instruments card. Until then the equalizer plays the whole
+track, which sounds exactly the same: the separated stems summed back
+reconstruct the original, so nothing is missing from what you hear. That is why
+the equalizer card carries a reduced set of playback controls.
+
+While the separation runs, everything already computed stays on screen and the
+progress bar sits above it. When it lands, the mixer and the waveform appear
+without the page leaving the view you were in.
 
 ## What it does
 
