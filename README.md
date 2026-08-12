@@ -28,7 +28,7 @@ and genre models and ffmpeg all come with it: nothing else to install, nothing
 to configure.
 
 About 2.7 GB to download with an NVIDIA card (a minute per song) or 1.1 GB
-without (about eight). Windows will warn that the installer is unsigned —
+without (a bit over a minute). Windows will warn that the installer is unsigned —
 choose *More info → Run anyway*.
 
 From then on it keeps itself up to date: on start it asks whether there is a
@@ -107,7 +107,7 @@ differ only in whether they can use an NVIDIA card.
 attached in two `.7z` parts because GitHub refuses attachments over 2 GB; the
 installer puts them back together, which is the reason it exists.
 
-**CPU edition** — 1.1 GB, about eight minutes per song on a fast desktop
+**CPU edition** — 1.1 GB, a bit over a minute per song on a fast desktop
 processor, 2.3 GB unpacked. Take this one if you have no NVIDIA card: the other
 edition would work anyway, at the same speed, but you would be downloading 4 GB
 of CUDA for nothing.
@@ -119,8 +119,10 @@ Windows may warn that these files are unsigned: choose *More info → Run anyway
 Artist and album recognition stays off until you add a free AcoustID key — see
 [The AcoustID key](#the-acoustid-key). Everything else works out of the box.
 
-The timings are measured on the same two-minute song with six stems: about a
-minute on an RTX 5070 Ti, 494 seconds on a Ryzen 7 7800X3D.
+The timings are measured on the same 2'16" song with six stems: about a minute on
+an RTX 5070 Ti, 69 seconds on a Ryzen 7 7800X3D. That second figure used to be
+447: without a card the app now skips the work that only a card can afford — see
+[Separation](#separation) for which work, and why the result is barely different.
 
 ## Updating itself
 
@@ -200,15 +202,21 @@ app re-injects it into "other instruments", which is already the catch-all stem,
 and the other five stay exactly as the model produced them. It can be turned off
 with `REINJECT_RESIDUAL=0`.
 
-**The vocals go through a second model.** `htdemucs_ft` is slower but more
-precise on singing, and it is used for the vocal stem only; the rest stays with
-the main model. The division of labour comes from a measurement made on the same
-track: `htdemucs_ft` produces a more harmonic voice (0.43 against 0.40, that is
-less bleed from cymbals and snare), and on a sung theme the measurement repeated
-itself (0.791 against 0.784 and 0.773). Taking from each model what it is better
-at gives the best of the two, and the difference between the two readings is
-absorbed by the catch-all stem, so the sum stays exact. It is turned off with
-`VOCE_RIFINITA=0`.
+**With an NVIDIA card, the vocals go through a second model.** `htdemucs_ft` is
+slower but more precise on singing, and it is used for the vocal stem only; the
+rest stays with the main model. The division of labour comes from a measurement
+made on the same track: `htdemucs_ft` produces a more harmonic voice (0.43
+against 0.40, that is less bleed from cymbals and snare), and on a sung theme the
+measurement repeated itself (0.791 against 0.784 and 0.773). Taking from each
+model what it is better at gives the best of the two, and the difference between
+the two readings is absorbed by the catch-all stem, so the sum stays exact.
+
+**Without a card that second pass does not happen**, and this is why. Its price
+is not "one more pass": `htdemucs_ft` is not a network, it is four, and the track
+crosses all of them. Timed on a processor, on the same 2'16" track: 321.9 seconds
+against the 75.7 of the main model — three quarters of the whole analysis, spent
+on a slightly cleaner voice. On a card those passes are seconds and they stay.
+`VOCE_RIFINITA=1` forces it on anywhere, `0` off anywhere.
 
 The other half of that measurement, though, did not hold up when tried on more
 tracks: it looked as if `htdemucs_6s` held the bass better (79% against 74%),
@@ -229,11 +237,13 @@ FLAC also has a practical advantage over MP3 for anyone putting the stems back
 into a sequencer: no encoding delay. MP3 introduces about 1105 samples, 25
 milliseconds, and the re-imported stems all come out shifted.
 
-`DEMUCS_SHIFTS=2` runs the track twice with a random shift and averages the
-result. Raising it further is not worth it: measured at 5 shifts and 0.75
-overlap, the fidelity does not improve at all while the time goes from 2 to 23
-seconds. They stayed configurable (`DEMUCS_SHIFTS`, `DEMUCS_OVERLAP`) but the
-default values are the right ones.
+**Shifted repetitions follow the same rule.** Each one runs the whole track
+again with a random offset and averages the result, which shaves off artefacts.
+With a card the app does two, and raising it further is not worth it: measured at
+5 shifts and 0.75 overlap, the fidelity does not improve at all while the time
+goes from 2 to 23 seconds. On a processor it does one, because that single pass
+already costs 76 seconds on a 2'16" track and the second buys less than it costs
+in waiting. `DEMUCS_SHIFTS` and `DEMUCS_OVERLAP` still override both.
 
 With `STEM_COUNT=4` you only get vocals, drums, bass and the rest, and the model
 changes too: not `htdemucs_6s` but `htdemucs`, which separates those four stems
