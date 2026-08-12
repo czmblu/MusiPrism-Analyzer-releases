@@ -18,7 +18,7 @@
 <sub>There is also a page to look at instead of read:
 **[czmblu.github.io/MusiPrism-Analyzer-releases](https://czmblu.github.io/MusiPrism-Analyzer-releases/)**</sub>
 
-[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.9](https://img.shields.io/badge/latest-v1.0.9-2f81f7?style=for-the-badge)
+[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.10](https://img.shields.io/badge/latest-v1.0.10-2f81f7?style=for-the-badge)
 
 Run it and it works out what your machine can actually use. If it finds an
 NVIDIA card that can run the analysis, it asks whether you want to; if there is
@@ -101,7 +101,7 @@ on first start.
 
 </div>
 
-## Download — version 1.0.9
+## Download — version 1.0.10
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
@@ -594,10 +594,19 @@ no: write to **[papeoalessio@gmail.com](mailto:papeoalessio@gmail.com)**.
 
 Everything it carries — Python, PyTorch, Demucs, the models, ffmpeg,
 Chromaprint — keeps its own licence, and this one takes nothing away from those.
-Two of them are worth knowing about: the bundled **ffmpeg is a GPL-3.0 build**,
-and the **genre model is CC BY-NC-SA 4.0**, which means the package cannot be
-used commercially. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) lists what
-is inside, under what terms, and where its source lives.
+Three things there are worth knowing:
+
+- the bundled **ffmpeg is a GPL-3.0 build**, so whoever receives it can get its
+  source;
+- the **genre model is CC BY-NC-SA 4.0**, which means the package as it ships
+  **cannot be used commercially**, by anyone;
+- four libraries are **LGPL** — Chromaprint with the ffmpeg built into it, LAME,
+  libsoxr and libsndfile — and each is named with the place its source lives.
+
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) is the full list: what is
+inside, under what terms, and where its source is. It ships inside the package
+and is appended to the licence page of the installer, so nobody has to come back
+here to read it.
 
 Releases up to 1.0.1 were MIT, and whoever took a copy under those terms keeps
 what MIT gave them for it: a licence already granted cannot be withdrawn.
