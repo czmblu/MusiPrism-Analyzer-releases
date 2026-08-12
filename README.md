@@ -18,7 +18,7 @@
 <sub>There is also a page to look at instead of read:
 **[czmblu.github.io/MusiPrism-Analyzer-releases](https://czmblu.github.io/MusiPrism-Analyzer-releases/)**</sub>
 
-[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.10](https://img.shields.io/badge/latest-v1.0.10-2f81f7?style=for-the-badge)
+[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.11](https://img.shields.io/badge/latest-v1.0.11-2f81f7?style=for-the-badge)
 
 Run it and it works out what your machine can actually use. If it finds an
 NVIDIA card that can run the analysis, it asks whether you want to; if there is
@@ -40,7 +40,11 @@ newer version and, if you say yes, replaces the application files — about a
 hundred kilobytes — and restarts. When it comes back it tells you, once, what
 changed.
 
-<img src="docs/screenshot-compact.png" width="900" alt="The compact view: recognised track, musical features, genre, similar tracks, synced lyrics and equalizer, all in one screen">
+<img src="docs/screenshot-compact.png" width="900" alt="The compact view: recognised track, musical features, genre, similar tracks, synced lyrics and equalizer, all in one screen. The lyrics are deliberately blurred in this picture.">
+
+<sub>*The words in the lyrics panel are blurred on purpose: they are somebody
+else's, and a screenshot is not the place to reprint them. In the app they are
+sharp.*</sub>
 
 </div>
 
@@ -101,7 +105,7 @@ on first start.
 
 </div>
 
-## Download — version 1.0.10
+## Download — version 1.0.11
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
@@ -599,7 +603,9 @@ Three things there are worth knowing:
 - the bundled **ffmpeg is a GPL-3.0 build**, so whoever receives it can get its
   source;
 - the **genre model is CC BY-NC-SA 4.0**, which means the package as it ships
-  **cannot be used commercially**, by anyone;
+  **cannot be used commercially**, by anyone — and Deezer, which supplies the
+  similar tracks, says the same about its API, so that is two independent
+  reasons and removing one would not remove the other;
 - four libraries are **LGPL** — Chromaprint with the ffmpeg built into it, LAME,
   libsoxr and libsndfile — and each is named with the place its source lives.
 
