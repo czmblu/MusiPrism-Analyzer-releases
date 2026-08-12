@@ -74,6 +74,8 @@ on first start.
 - **Genre** from MAEST, trained on the Discogs taxonomy of 400 styles.
 - **Artist and album** from the Chromaprint fingerprint (AcoustID + MusicBrainz).
 - **Synced lyrics** from LRCLIB, scrolling and highlighting as you listen.
+- **Sheet music** of any instrument, written out on demand and readable in
+  treble, bass, alto or tenor clef.
 - **Vocal range**, **MIDI transcription** of each stem, and **five similar
   tracks** from the recognised artist.
 
@@ -89,7 +91,7 @@ on first start.
 
 </div>
 
-## Download — version 1.0.6
+## Download — version 1.0.7
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
@@ -371,6 +373,28 @@ widen the range by an octave.
 downloaded as a MIDI file, to be opened in a sequencer. It works precisely
 because the stems are separated: the model's authors write that it "works best
 on one instrument at a time".
+
+**Sheet music, in the clef you read.** In the full view, pick an instrument and
+press the button: its part is written out as a real score — bars, note values,
+rests, dots, ties, beams, accidentals and the key signature of the song. The
+same score can be read in **treble, bass, alto or tenor clef**, so a viola
+player and a cellist can each read the part where it belongs, and switching
+between them is instant: it is the same notes drawn again, not a second
+transcription. The app proposes the clef that keeps the part on the staff, and
+you can override it.
+
+Nothing is written until the button is pressed. Transcribing a stem and finding
+the beat costs a few seconds, and it would be spent on a score that not
+everyone opens — the same reason the MIDI and the spectrograms are made on
+demand.
+
+Two things are worth knowing before reading it. The bars are placed on the
+beat detected in the whole track, assuming 4/4 and taking the first beat as a
+downbeat, and the tempo used is shown next to the score — it is not always the
+one in the track's features, because they are two different measurements of the
+same piece. And notes heard at the same moment become a chord on a single
+staff: this is one part written down, not an engraved arrangement with separate
+voices.
 
 **Backing track.** All the stems summed except the vocal one, downloadable with
 one click. It is not an extra file produced by the analysis but the sum of the
