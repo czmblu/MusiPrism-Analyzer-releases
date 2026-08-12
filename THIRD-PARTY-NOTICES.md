@@ -106,8 +106,27 @@ lines and it is the authoritative list for that part.
 MPL-2.0 is copyleft per *file*: it asks that the source of those files stay
 available, which it is, and it puts no condition on the program around them.
 
-The services it queries over the network — AcoustID, MusicBrainz, LRCLIB,
-Deezer — are not redistributed and keep their own terms of use.
+## The services it talks to
+
+Nothing here is redistributed — these are queried over the network while the app
+runs — but two of them ask something of whoever uses it.
+
+**Deezer**, which provides the similar tracks, their covers and the 30-second
+previews, allows its API to be used **only for a non-commercial purpose and in a
+non-commercial environment**, and asks that whoever listens is told the previews
+are for **private listening**. Both are said in the app, in the card that shows
+them. It is the second independent reason this package cannot be used
+commercially, the first being the genre model: replacing the model alone would
+not remove the constraint.
+
+**MusicBrainz** wants requests to carry an application name, a version and a
+contact that works, so that whoever asks too much can be warned rather than cut
+off. MusiPrism sends its name, its version and the address of its project page.
+
+**AcoustID** needs a key of your own, free, requested in a minute; the app never
+ships one. **LRCLIB** needs no key. The lyrics it returns are the work of their
+authors and publishers: MusiPrism displays them while you listen and does not
+keep them.
 
 If something in this list is wrong or missing, it is a mistake and not a claim:
 write to papeoalessio@gmail.com and it gets corrected.
