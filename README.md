@@ -89,7 +89,7 @@ on first start.
 
 </div>
 
-## Download
+## Download — version 1.0.6
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
