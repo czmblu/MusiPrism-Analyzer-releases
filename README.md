@@ -16,10 +16,12 @@
 
 [![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe)
 
-Run it and answer one question — whether you have an NVIDIA card. It downloads
-the right package, unpacks it and leaves **MusiPrism Analyzer** in the Start
-menu. Python, the libraries, the separation and genre models and ffmpeg all come
-with it: nothing else to install, nothing to configure.
+Run it and it looks for an NVIDIA card. If it finds one it asks whether to use
+it; if there is none it does not ask at all and takes the edition that runs on
+the processor. Then it downloads the right package, unpacks it and leaves
+**MusiPrism Analyzer** in the Start menu. Python, the libraries, the separation
+and genre models and ffmpeg all come with it: nothing else to install, nothing
+to configure.
 
 About 2.7 GB to download with an NVIDIA card (a minute per song) or 1.1 GB
 without (about eight). Windows will warn that the installer is unsigned —
