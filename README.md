@@ -80,11 +80,18 @@ on first start.
 
 ## Download
 
-**The installer** is 3 MB and carries none of the program: it asks which edition
-you want, downloads it and unpacks it. It installs under your own user, without
-asking for administrator rights — not to spare you the prompt, but because the
-app rewrites its own files when it updates, and inside *Program Files* it could
-not do that without asking every time. Uninstalling removes the folder whole.
+**The installer** is 3 MB and carries none of the program: it works out which
+edition you need, downloads it and unpacks it. It installs under your own user,
+without asking for administrator rights — not to spare you the prompt, but
+because the app rewrites its own files when it updates, and inside *Program
+Files* it could not do that without asking every time. Uninstalling removes the
+folder whole.
+
+If a copy is already installed it says so, and where, and asks whether to go on.
+Answering no ends the installation and changes nothing. Answering yes installs
+over it, in the same folder: the new version is downloaded and unpacked first
+and the old one removed only once it has arrived, so a download that fails
+leaves you with the program you had. Your AcoustID key is carried across.
 
 Behind it, the [latest release](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)
 carries **two ready-to-run packages**: Python, every library, the models and
