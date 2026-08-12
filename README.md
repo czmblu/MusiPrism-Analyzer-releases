@@ -9,7 +9,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-desktop%20app-0078D4?logo=windows&logoColor=white)
 ![CUDA](https://img.shields.io/badge/CUDA-12.8-76B900?logo=nvidia&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/licence-free%20to%20use%2C%20not%20to%20share-blue)
 ![Offline](https://img.shields.io/badge/your%20audio-never%20leaves%20the%20PC-4ade80)
 
 ### ⬇ Download — one file, and it does the rest
@@ -454,9 +454,18 @@ close. **The downloaded models are not touched**: they are about 600 MB in
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The models and services it leans on keep their
-own terms: [Demucs](https://github.com/adefossez/demucs) (MIT),
-[MAEST](https://huggingface.co/mtg-upf/discogs-maest-30s-pw-73e-ts),
-[basic-pitch](https://github.com/spotify/basic-pitch) (Apache-2.0),
-[Chromaprint](https://github.com/acoustid/chromaprint) (LGPL-2.1, the
-`bin/fpcalc.exe` binary), and the AcoustID, MusicBrainz, LRCLIB and Deezer APIs.
+**Free to use, not to pass on.** Install it on any computer you own and use it
+for as long as you like, at no charge. What you may not do, without asking
+first, is give it to anyone else — publish it, upload it, share it, sell it, or
+bundle it with something else, whole or in part, original or modified, installer
+or package or the source code inside it. See [LICENSE](LICENSE).
+
+Everything it carries — Python, PyTorch, Demucs, the models, ffmpeg,
+Chromaprint — keeps its own licence, and this one takes nothing away from those.
+Two of them are worth knowing about: the bundled **ffmpeg is a GPL-3.0 build**,
+and the **genre model is CC BY-NC-SA 4.0**, which means the package cannot be
+used commercially. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) lists what
+is inside, under what terms, and where its source lives.
+
+Releases up to 1.0.1 were MIT, and whoever took a copy under those terms keeps
+what MIT gave them for it: a licence already granted cannot be withdrawn.
