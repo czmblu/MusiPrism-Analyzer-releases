@@ -33,7 +33,8 @@ choose *More info → Run anyway*.
 
 From then on it keeps itself up to date: on start it asks whether there is a
 newer version and, if you say yes, replaces the application files — about a
-hundred kilobytes — and restarts.
+hundred kilobytes — and restarts. When it comes back it tells you, once, what
+changed.
 
 <img src="docs/screenshot-compact.png" width="900" alt="The compact view: recognised track, musical features, genre, similar tracks, synced lyrics and equalizer, all in one screen">
 
@@ -132,6 +133,10 @@ and installs it only if you agree. It takes about a second: the update carries
 the **application files alone**, a hundred kilobytes, while Python, the
 libraries and the models, which are the 2.7 GB of the package and which almost
 no fix touches, stay where they are. The app then restarts by itself.
+
+When it comes back, a window tells you what changed — once, on the first start
+of the new version. That is the moment it is worth reading; before installing,
+what you want to know is only whether to install.
 
 Your AcoustID key and the analyses on disk are left alone. If the download or
 the copy fails, every replaced file is put back and the app keeps working as it
