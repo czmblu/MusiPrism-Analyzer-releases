@@ -12,21 +12,22 @@
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Offline](https://img.shields.io/badge/your%20audio-never%20leaves%20the%20PC-4ade80)
 
-### ⬇ Download — ready to run, nothing to install
+### ⬇ Download — one file, and it does the rest
 
-| | | |
-|:--|:--|:--|
-| **[NVIDIA edition](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)** | 3 files, 2.7 GB | **~1 minute** per song |
-| **[CPU edition](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)** | 1 file, 1.1 GB | ~8 minutes per song |
+[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe)
 
-Unpack, double-click, drop a song in. Python, the libraries, the models and
-ffmpeg are already inside — no installer, no downloads, no Python on your PC.
-Take the NVIDIA edition if you have that card, the CPU one otherwise.
+Run it and answer one question — whether you have an NVIDIA card. It downloads
+the right package, unpacks it and leaves **MusiPrism Analyzer** in the Start
+menu. Python, the libraries, the separation and genre models and ffmpeg all come
+with it: nothing else to install, nothing to configure.
 
-Once it is installed it keeps itself up to date: on start it asks
-[the releases repository](https://github.com/czmblu/MusiPrism-Analyzer-releases)
-whether there is a newer version and, if you say yes, replaces the application
-files — about a hundred kilobytes — and restarts.
+About 2.7 GB to download with an NVIDIA card (a minute per song) or 1.1 GB
+without (about eight). Windows will warn that the installer is unsigned —
+choose *More info → Run anyway*.
+
+From then on it keeps itself up to date: on start it asks whether there is a
+newer version and, if you say yes, replaces the application files — about a
+hundred kilobytes — and restarts.
 
 <img src="docs/screenshot-compact.png" width="900" alt="The compact view: recognised track, musical features, genre, similar tracks, synced lyrics and equalizer, all in one screen">
 
@@ -77,25 +78,30 @@ on first start.
 
 ## Download
 
-The [latest release](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)
+**The installer** is 3 MB and carries none of the program: it asks which edition
+you want, downloads it and unpacks it. It installs under your own user, without
+asking for administrator rights — not to spare you the prompt, but because the
+app rewrites its own files when it updates, and inside *Program Files* it could
+not do that without asking every time. Uninstalling removes the folder whole.
+
+Behind it, the [latest release](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)
 carries **two ready-to-run packages**: Python, every library, the models and
-ffmpeg are already inside them. Nothing is installed on the computer and nothing
-is downloaded on first start. Both do exactly the same things — they differ only
-in whether they can use an NVIDIA card.
+ffmpeg are already inside them. Nothing else is installed on the computer and
+nothing is downloaded on first start. Both do exactly the same things — they
+differ only in whether they can use an NVIDIA card.
 
-**NVIDIA edition** — three files, 2.7 GB, about a minute per song. Download all
-three into the same folder (the two `.7z` parts are the package, split because
-GitHub refuses assets over 2 GB; the small `.exe` is the extractor), then
-double-click `MusiPrism-Analyzer-portable.exe`. About 6 GB unpacked.
+**NVIDIA edition** — 2.7 GB, about a minute per song, 6 GB unpacked. It is
+attached in two `.7z` parts because GitHub refuses attachments over 2 GB; the
+installer puts them back together, which is the reason it exists.
 
-**CPU edition** — one file, 1.1 GB, about eight minutes per song on a fast
-desktop processor. Double-click it and it unpacks itself. About 2.3 GB unpacked.
-Take this one if you have no NVIDIA card: the other edition would work anyway,
-at the same speed, but you would be downloading 4 GB of CUDA for nothing.
+**CPU edition** — 1.1 GB, about eight minutes per song on a fast desktop
+processor, 2.3 GB unpacked. Take this one if you have no NVIDIA card: the other
+edition would work anyway, at the same speed, but you would be downloading 4 GB
+of CUDA for nothing.
 
-Either way, open the folder that appears and double-click **MusiPrism
-Analyzer.bat**. Windows may warn that the extractor is unsigned — choose
-*More info → Run anyway*.
+Both can also be downloaded by hand from the release and unpacked without the
+installer — the folder they contain runs from anywhere, including a USB drive.
+Windows may warn that these files are unsigned: choose *More info → Run anyway*.
 
 Artist and album recognition stays off until you add a free AcoustID key — see
 [The AcoustID key](#the-acoustid-key). Everything else works out of the box.
