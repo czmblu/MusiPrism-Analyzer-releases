@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="96" height="96" role="img" aria-label="MusiPrism Analyzer">
+  <title>MusiPrism Analyzer</title>
+  <clipPath id="plate">
+    <rect x="0" y="0" width="64" height="64" rx="14" ry="14"/>
+  </clipPath>
+  <g clip-path="url(#plate)">
+    <rect x="0" y="0" width="64" height="64" rx="14" ry="14" fill="#171a21"/>
+    <line x1="3.84" y1="6.4" x2="24.96" y2="28.89" stroke="#ffffff" stroke-width="3.84"/>
+    <g stroke-width="4.8" stroke-linecap="round">
+      <line x1="32.64" y1="33.87" x2="64.56" y2="36.1" stroke="#ff5c5c"/>
+      <line x1="32.64" y1="33.87" x2="70.16" y2="46.79" stroke="#ffbe4a"/>
+      <line x1="32.64" y1="33.87" x2="62.35" y2="53.91" stroke="#6ee08c"/>
+      <line x1="32.64" y1="33.87" x2="51.11" y2="55.12" stroke="#6ea8fe"/>
+    </g>
+    <path d="M19.71 14.76 L18.6 46.74 L46.85 31.72 Z"
+          fill="#242c3c" stroke="#cee0ff" stroke-width="2.88" stroke-linejoin="round"/>
+  </g>
+</svg>
