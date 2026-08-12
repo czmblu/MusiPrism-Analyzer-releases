@@ -1,0 +1,57 @@
+MusiPrism Analyzer — Licence
+
+Copyright (c) 2026 czmblu. All rights reserved.
+
+This program is not open source. The source code is published nowhere, and the
+copies handed out are for using it, not for passing it on.
+
+
+WHAT YOU MAY DO
+
+You may download MusiPrism Analyzer and install it on any computer you own or
+control, and use it for as long as you like, at no charge, for your own
+purposes. You may keep backup copies. You may read the source code that comes
+inside the package, and change it on your own machine.
+
+
+WHAT YOU MAY NOT DO, WITHOUT WRITTEN PERMISSION
+
+You may not give the program to anyone else. That covers publishing it,
+uploading it, sharing it, selling it, renting it, bundling it with something
+else, or making it available on any service — whether whole or in part, whether
+the original or a version you have changed, and whether it is the installer, the
+package, or the source code inside it.
+
+You may not sublicense it, and you may not remove or alter the copyright and
+licence notices it carries.
+
+If you want to do any of these things, ask.
+
+
+WHAT THIS LICENCE DOES NOT COVER
+
+MusiPrism Analyzer carries other people's work: Python, PyTorch, Demucs, the
+genre model, ffmpeg, Chromaprint and more. Each of those keeps its own licence,
+and nothing written here takes away, or could take away, any right those
+licences give you. Some of them are free software whose licence expressly allows
+you to redistribute *them*; that permission stands, and it applies to those
+components, not to MusiPrism Analyzer itself.
+
+Two of them place obligations on this program rather than on you. The bundled
+ffmpeg is a GPL-3.0 build, and the genre model is CC BY-NC-SA 4.0, which does
+not permit commercial use. THIRD-PARTY-NOTICES.md lists what is inside, under
+what terms, and where to get the corresponding source.
+
+
+NO WARRANTY
+
+The program is provided as it is, with no warranty of any kind, express or
+implied, including but not limited to fitness for a particular purpose. The
+author is not liable for any damage, data loss or other harm arising from using
+it or being unable to use it.
+
+
+Earlier releases of MusiPrism Analyzer, up to and including version 1.0.1, were
+published under the MIT licence. Whoever received a copy under those terms keeps
+what MIT gave them for that copy: a licence already granted cannot be withdrawn.
+This licence governs version 1.0.2 and everything after it.
