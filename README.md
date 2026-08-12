@@ -6,6 +6,7 @@
 
 **A prism splits light into its colours. This splits a song into its instruments.**
 
+![Made by czmblu](https://img.shields.io/badge/made%20by-czmblu-8957e5)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-desktop%20app-0078D4?logo=windows&logoColor=white)
 ![CUDA](https://img.shields.io/badge/CUDA-12.8-76B900?logo=nvidia&logoColor=white)
@@ -519,6 +520,9 @@ first, is give it to anyone else — publish it, upload it, share it, sell it, o
 bundle it with something else, whole or in part, original or modified, installer
 or package or the source code inside it. See [LICENSE](LICENSE).
 
+Asking is the whole point of that sentence, and the answer is not automatically
+no: write to **[papeoalessio@gmail.com](mailto:papeoalessio@gmail.com)**.
+
 Everything it carries — Python, PyTorch, Demucs, the models, ffmpeg,
 Chromaprint — keeps its own licence, and this one takes nothing away from those.
 Two of them are worth knowing about: the bundled **ffmpeg is a GPL-3.0 build**,
@@ -528,3 +532,11 @@ is inside, under what terms, and where its source lives.
 
 Releases up to 1.0.1 were MIT, and whoever took a copy under those terms keeps
 what MIT gave them for it: a licence already granted cannot be withdrawn.
+
+## Made by czmblu
+
+Written and maintained by **czmblu**.
+
+For anything that needs a person on the other end — permission to pass it on, a
+defect, a question, a use the licence does not cover — write to
+**[papeoalessio@gmail.com](mailto:papeoalessio@gmail.com)**.
