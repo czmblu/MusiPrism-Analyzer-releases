@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MusiPrism Analyzer — split a song into its instruments</title>
+<meta name="description" content="Windows app that separates a song into its instruments and reads everything out of it: tempo, key, structure, genre, lyrics, sheet music. Runs on your PC — the audio never leaves it.">
+<link rel="icon" href="logo.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="MusiPrism Analyzer">
+<meta property="og:description" content="A prism splits light into its colours. This splits a song into its instruments.">
+<meta property="og:image" content="https://czmblu.github.io/MusiPrism-Analyzer-releases/screenshot-mixer.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  /* I colori non sono scelti: sono quelli del programma e del suo marchio. Il
+     logo scompone un raggio bianco in quattro — rosso, ambra, verde, blu — e
+     quei quattro sono il gradiente di tutta la pagina. Un prisma con sopra due
+     colori qualsiasi sarebbe un logo che dice una cosa e una pagina che ne
+     dice un'altra. */
+  :root{
+    --rosso:#ff5c5c; --ambra:#ffbe4a; --verde:#6ee08c; --blu:#6ea8fe;
+    --bg:#0d0f14; --bg2:#131720; --card:#171a21; --line:#262b36;
+    --txt:#e7eaf0; --mut:#9aa3b2;
+    --spettro:linear-gradient(100deg,var(--rosso),var(--ambra),var(--verde),var(--blu));
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;
+    padding:13px 24px;border-radius:12px;transition:.2s;border:1px solid transparent;cursor:pointer;
+  }
+  .btn-primary{background:var(--spettro);color:#101319;box-shadow:0 8px 30px rgba(110,168,254,.28)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(110,168,254,.42)}
+  .btn-ghost{background:#ffffff0d;border-color:var(--line);color:var(--txt)}
+  .btn-ghost:hover{background:#ffffff1a;border-color:#39414f}
+
+  /* HERO — gli aloni sono quattro, uno per colore del prisma, in fila da
+     sinistra a destra come i raggi che escono dal vetro. */
+  header{position:relative;overflow:hidden;text-align:center;padding:88px 0 68px}
+  /* Quattro aloni tenui, non un arcobaleno: alla prima prova erano al 34% e
+     riempivano tutta la testata di colore, e dove rosso e ambra si
+     sovrapponevano veniva un marrone. Sfumati così restano quattro luci su uno
+     sfondo scuro, che è quello che esce da un prisma. */
+  .alone{position:absolute;border-radius:50%;filter:blur(110px);opacity:.20;z-index:0}
+  .a1{width:340px;height:340px;background:var(--rosso);top:-190px;left:2%}
+  .a2{width:320px;height:320px;background:var(--ambra);top:-210px;left:28%}
+  .a3{width:320px;height:320px;background:var(--verde);top:-210px;right:28%}
+  .a4{width:360px;height:360px;background:var(--blu);top:-190px;right:2%}
+  header .wrap{position:relative;z-index:1}
+  .logo{width:112px;height:112px;border-radius:26px;box-shadow:0 16px 50px rgba(0,0,0,.55)}
+  h1{font-size:clamp(38px,7vw,62px);letter-spacing:-1.5px;margin:22px 0 6px;font-weight:800}
+  .grad{background:var(--spettro);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{font-size:clamp(17px,2.4vw,21px);color:var(--mut);max-width:660px;margin:0 auto 26px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .badge{font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:5px 13px;background:#ffffff08}
+  .badge b{color:var(--txt)}
+
+  section{padding:62px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(26px,4vw,34px);letter-spacing:-.6px;text-align:center;margin-bottom:8px;font-weight:800}
+  .sub{text-align:center;color:var(--mut);max-width:660px;margin:0 auto 42px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;transition:.2s}
+  .card:hover{border-color:#39415a;transform:translateY(-3px)}
+  .card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;margin-bottom:14px;
+    background:linear-gradient(120deg,rgba(255,92,92,.18),rgba(110,168,254,.18));border:1px solid var(--line)}
+  .card h3{font-size:17px;margin-bottom:6px}
+  .card p{color:var(--mut);font-size:14.5px}
+  .card b{color:var(--txt)}
+
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;counter-reset:s}
+  .step{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:22px;width:34px;height:34px;border-radius:10px;
+    display:grid;place-items:center;font-weight:800;color:#101319;background:var(--spettro)}
+  .step h3{margin:10px 0 6px;font-size:16px}
+  .step p{color:var(--mut);font-size:14.5px}
+  .step code,.card code{background:#00000055;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
+
+  .rilievo{background:linear-gradient(120deg,rgba(255,92,92,.10),rgba(255,190,74,.10),rgba(110,224,140,.10),rgba(110,168,254,.10));
+    border:1px solid var(--line);border-radius:20px;padding:36px;text-align:center}
+  .rilievo ul{list-style:none;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .rilievo li{color:var(--mut);font-size:14.5px}
+  .rilievo li b{color:var(--txt)}
+
+  /* Le schermate sono la cosa che convince: si guardano prima di leggere. */
+  .scatti{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .scatto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 12px 6px;overflow:hidden}
+  .scatto img{border-radius:9px;display:block;width:100%}
+  .scatto figcaption{color:var(--mut);font-size:13.5px;padding:11px 6px 10px;text-align:center}
+  .scatto.largo{grid-column:1/-1}
+
+  .dl{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .dl .card{max-width:340px;text-align:center}
+  .note{text-align:center;color:var(--mut);font-size:13.5px;margin-top:22px;max-width:660px;margin-left:auto;margin-right:auto}
+
+  footer{border-top:1px solid var(--line);padding:38px 0;text-align:center;color:var(--mut);font-size:14px}
+  footer a{color:var(--blu)}
+  footer .mk{margin-top:8px;font-size:13px;opacity:.8}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="alone a1"></div><div class="alone a2"></div>
+  <div class="alone a3"></div><div class="alone a4"></div>
+  <div class="wrap">
+    <img class="logo" src="logo.svg" alt="MusiPrism Analyzer">
+    <h1>Musi<span class="grad">Prism</span> Analyzer</h1>
+    <p class="tag">A prism splits light into its colours. This splits a song into
+      <b>its instruments</b> — and then reads everything that can be read out of it.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe">⬇ Download for Windows</a>
+      <a class="btn btn-ghost" href="https://github.com/czmblu/MusiPrism-Analyzer-releases/releases">★ Releases on GitHub</a>
+    </div>
+    <div class="badges">
+      <span class="badge" id="ver"><b>latest version</b></span>
+      <span class="badge">Windows 10/11</span>
+      <span class="badge">installer · <b>3 MB</b></span>
+      <span class="badge">NVIDIA optional</span>
+      <span class="badge">your audio <b>never leaves the PC</b></span>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <p class="sub">You load a song. It takes it apart, and tells you what is inside.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">🎚️</div><h3>Separates the instruments</h3>
+        <p>Vocals, drums, bass, guitar, piano and the rest. The separated tracks
+        <b>sum back to the original</b>, 75 dB below it — nothing is thrown away.</p></div>
+
+      <div class="card"><div class="ic">🎧</div><h3>A mixer that plays them in sync</h3>
+        <p>Mute one instrument, hear it alone, change its volume, download it — or take
+        the whole <b>backing track</b> without the vocals.</p></div>
+
+      <div class="card"><div class="ic">🎼</div><h3>Writes the score</h3>
+        <p>Any instrument's part in real notation — bars, ties, beams, accidentals —
+        readable in <b>treble, bass, alto or tenor clef</b>.</p></div>
+
+      <div class="card"><div class="ic">📐</div><h3>Tempo, key and dynamics</h3>
+        <p>Measured from the signal, not guessed, together with how tempo and key
+        <b>change</b> across the track.</p></div>
+
+      <div class="card"><div class="ic">🧩</div><h3>Finds the structure</h3>
+        <p>Intro, verse, chorus: sections cut <b>on bar boundaries</b>, with the
+        repeated ones marked — that is how a chorus shows itself.</p></div>
+
+      <div class="card"><div class="ic">🏷️</div><h3>Genre, artist and album</h3>
+        <p>Genre from a model trained on 400 styles; artist and album from the
+        <b>acoustic fingerprint</b> of the recording.</p></div>
+
+      <div class="card"><div class="ic">🎤</div><h3>Lyrics that follow the music</h3>
+        <p>Synced line by line, scrolling and highlighting as you listen — when a
+        synced version exists, and it says so when it does not.</p></div>
+
+      <div class="card"><div class="ic">🎹</div><h3>Notes, range and MIDI</h3>
+        <p>The sung range from lowest to highest note, and every separated track
+        transcribed to a <b>MIDI file</b> for your sequencer.</p></div>
+
+      <div class="card"><div class="ic">✨</div><h3>Five tracks like this one</h3>
+        <p>Five <b>different artists</b> rather than five songs off the same record,
+        each with its cover and a preview you can play in the page.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <div class="rilievo">
+      <h2>Your music never leaves your computer</h2>
+      <p class="sub" style="margin-bottom:0">Separation, genre, tempo, key and transcription
+      all run on your own machine. Nothing is uploaded, and there is no account to make.</p>
+      <ul>
+        <li>🔌 <b>Works offline</b> once installed</li>
+        <li>🧬 Recognition sends a <b>fingerprint</b>, never the audio</li>
+        <li>🗑️ Results are <b>deleted when you close it</b></li>
+        <li>🚫 <b>No account</b>, no cloud, no telemetry</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="shots">
+  <div class="wrap">
+    <h2>What it looks like</h2>
+    <p class="sub">Two views: everything on one screen, or the whole thing.</p>
+    <div class="scatti">
+      <figure class="scatto largo">
+        <img src="screenshot-compact.png" alt="The compact view: track, musical features, genre pie chart, similar tracks, lyrics and equalizer on a single screen">
+        <figcaption>The compact view — track, features, genre, similar tracks, lyrics and equalizer, without scrolling.</figcaption>
+      </figure>
+      <figure class="scatto largo">
+        <img src="screenshot-score.png" alt="The sheet music card: the bass part written out in bass clef, with bars, rests, ties and beams">
+        <figcaption>The score of one instrument, here the bass in bass clef — written only when you ask for it.</figcaption>
+      </figure>
+      <figure class="scatto">
+        <img src="screenshot-mixer.png" alt="The mixer: separated stems with mute, solo, volume, MIDI export and download">
+        <figcaption>The mixer: mute, solo, volume, MIDI and download, one row per instrument.</figcaption>
+      </figure>
+      <figure class="scatto">
+        <img src="screenshot-spectrogram.png" alt="The spectrogram of a separated track">
+        <figcaption>The sound seen: waveform and spectrogram, computed on the full-resolution audio.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install in 3 steps</h2>
+    <p class="sub">One file, and it works out the rest by itself.</p>
+    <div class="steps">
+      <div class="step"><h3>Download and run</h3>
+        <p>A single <code>MusiPrism-Analyzer-Setup.exe</code>, 3 MB. No administrator
+        rights needed: it installs for your user.</p></div>
+      <div class="step"><h3>It picks your edition</h3>
+        <p>It reads what your graphics card can actually run — not just whether one is
+        there — and takes the NVIDIA package or the processor one. Python, the models
+        and ffmpeg come with it.</p></div>
+      <div class="step"><h3>Drop in a song</h3>
+        <p>mp3, wav, flac, m4a, ogg, opus. New versions arrive on their own, and you
+        decide whether to take them.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2>Download</h2>
+    <p class="sub">Free to use. Windows 10 and 11, 64-bit.</p>
+    <div class="dl">
+      <div class="card">
+        <div class="ic" style="margin:0 auto 14px">⬇️</div>
+        <h3>Installer for Windows</h3>
+        <p style="margin-bottom:16px">3 MB. It downloads the right package for your
+        machine and puts <b>MusiPrism Analyzer</b> in the Start menu.</p>
+        <a class="btn btn-primary" href="https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe">Download the installer</a>
+      </div>
+    </div>
+    <p class="note">The installer is 3 MB, but what it fetches is not: about 2.7 GB with an
+    NVIDIA card, 1.1 GB without. Everything is inside — there is nothing else to install
+    and nothing to configure. Windows will say the publisher is unknown: the installer is
+    not signed, and a certificate is bought.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Made by <b>Francesco Papeo</b> · Free to use, not to redistribute ·
+      <a href="https://github.com/czmblu/MusiPrism-Analyzer-releases">GitHub</a></div>
+    <div class="mk">MusiPrism Analyzer — local music analysis: separation, transcription and sheet music.</div>
+  </div>
+</footer>
+
+<script>
+  // La versione la dice l'ultima release, non questa pagina: scritta qui
+  // sarebbe un numero da aggiornare a mano, cioe' un numero che prima o poi
+  // resta indietro. I pulsanti invece puntano gia' a
+  // /releases/latest/download/, che segue la release piu' recente da solo:
+  // non c'e' niente da correggere qui, e funzionano anche senza JavaScript.
+  fetch('https://api.github.com/repos/czmblu/MusiPrism-Analyzer-releases/releases/latest')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (d && d.tag_name) document.getElementById('ver').innerHTML = '<b>' + d.tag_name + '</b>';
+    })
+    .catch(function () { /* offline o quota esaurita: resta "latest version" */ });
+</script>
+
+</body>
+</html>
