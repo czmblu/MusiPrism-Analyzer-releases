@@ -14,6 +14,9 @@
 
 ### ⬇ Download — one file, and it does the rest
 
+<sub>There is also a page to look at instead of read:
+**[czmblu.github.io/MusiPrism-Analyzer-releases](https://czmblu.github.io/MusiPrism-Analyzer-releases/)**</sub>
+
 [![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.7](https://img.shields.io/badge/latest-v1.0.7-2f81f7?style=for-the-badge)
 
 Run it and it works out what your machine can actually use. If it finds an
