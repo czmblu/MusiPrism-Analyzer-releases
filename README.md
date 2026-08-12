@@ -18,7 +18,7 @@
 <sub>There is also a page to look at instead of read:
 **[czmblu.github.io/MusiPrism-Analyzer-releases](https://czmblu.github.io/MusiPrism-Analyzer-releases/)**</sub>
 
-[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.8](https://img.shields.io/badge/latest-v1.0.8-2f81f7?style=for-the-badge)
+[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.9](https://img.shields.io/badge/latest-v1.0.9-2f81f7?style=for-the-badge)
 
 Run it and it works out what your machine can actually use. If it finds an
 NVIDIA card that can run the analysis, it asks whether you want to; if there is
@@ -78,12 +78,18 @@ on first start.
 - **Genre** from MAEST, trained on the Discogs taxonomy of 400 styles.
 - **Artist and album** from the Chromaprint fingerprint (AcoustID + MusicBrainz).
 - **Synced lyrics** from LRCLIB, scrolling and highlighting as you listen.
+- **Chords over time**, laid out bar by bar as a chart you can play from, with
+  the chord you are hearing lighting up as the song goes.
 - **Sheet music** of any instrument, written out on demand and readable in
   treble, bass, alto or tenor clef.
 - **Vocal range**, **MIDI transcription** of each stem, and **five similar
   tracks** from the recognised artist.
 
 <div align="center">
+
+<img src="docs/screenshot-chords.png" width="820" alt="The chords card: a grid of bars, each divided into four beats, with the chord of every beat and the one currently playing highlighted">
+
+*The chords bar by bar — the one you are hearing lights up, and a click jumps there.*
 
 <img src="docs/screenshot-mixer.png" width="820" alt="The mixer: four separated stems with mute, solo, volume, MIDI export and download">
 
@@ -95,7 +101,7 @@ on first start.
 
 </div>
 
-## Download — version 1.0.8
+## Download — version 1.0.9
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
@@ -201,6 +207,33 @@ again from the beginning. The stems go back to zero all together, with the same
 mechanism used for seeking, so they stay in sync on the restart. The two groups
 of controls — the one in the top bar and the compact one — always show the same
 state.
+
+**Slow it down, and repeat the hard bar.** In the top bar there is a speed
+slider, from half speed to a fifth faster, and **the pitch does not change** —
+at 60% the piece is slower, not lower. Next to it, **A** and **B** put the two
+ends of a passage wherever the playhead is, and from then on those bars repeat
+on their own; the stretch shows up in yellow on the position bar, with a mark at
+each end. Press **✕** and the loop is gone. Press A or B again and that end
+moves, which is what you want when you were a beat out.
+
+The two work together, and together they are the point: 60% and four bars on
+repeat is how you learn a passage you cannot play yet.
+
+The chosen speed follows you from one song to the next — someone practising at
+half speed stays at half speed — while the two loop points do not: they are
+instants of *that* recording, and on another piece they would mark a passage at
+random.
+
+**⇄ plays the song backwards.** Every separated track is reversed, not just the
+sum, so backwards you still have the mixer: mute an instrument, solo it, move
+the equalizer, slow it down, loop four bars of it. The playhead crosses the
+waveform right to left, the instrument icons light up on the right beats, and
+the loop points move to the passage they were marking — the same bars, coming
+the other way. Pressing ⇄ again puts you back exactly where the music was.
+
+The reversing is done once, when you first ask for it, and it takes about a
+quarter of a second per track. From then on it is just another file: the app
+does not play backwards, it plays a backwards file.
 
 Every instrument has its own icon, which **lights up while that instrument is
 playing** and stays dark when it is silent — with the strength of the glow
@@ -368,6 +401,29 @@ octave of the overall one, otherwise it would jump between 86 and 172 BPM on a
 piece that never changed pace. Key changes are only shown if they last: one
 appearing in a single window is a passing chord.
 
+**Chords over time.** The harmony of the whole song, one chord decided per beat
+and laid out in bars of 4/4 on the same beat grid as the sheet music. It reads
+as a chord chart: click a bar to jump there, and while the song plays the chord
+you are hearing lights up. A chord carried over from the previous bar keeps its
+name in a dimmer shade, and a beat where no harmony could be made out is left
+blank rather than filled with a guess.
+
+It does not wait for the separation: the harmony is in the whole track, so the
+chords can be asked for as soon as the first part of the analysis is done. That
+is also a measured choice and not a shortcut — reading them from the separated
+harmony and bass instead scores 70.9% against 69.3%, one and a half points for
+the minutes the separation costs.
+
+**What is reliable here is the root note.** Checked against the separated bass
+line of a real song — the bass plays the root, and being one note at a time its
+pitch can be measured without argument — the root is right in **76% of the
+beats**, where guessing would get 8%. Major or minor is read from the same
+sound and is less certain. Sevenths are deliberately **not written**: they are
+used to *find* the chord, where they help a great deal, but the fourth note they
+match is largely an artefact of how the pitch content is measured, so claiming
+it as played would be writing down something nobody heard. That is one song's
+measurement, and it is worth reading as such.
+
 **Vocal range.** Lowest and highest note actually sung, with the range in
 octaves — to know whether a piece sits in your own tessitura. The two extreme
 percentiles are discarded, otherwise a breath or an isolated off note would
@@ -424,8 +480,21 @@ key is **free and unlimited**:
 
 1. register at <https://acoustid.org/new-application>;
 2. copy the key you get;
-3. paste it into the `.env` file, under `ACOUSTID_API_KEY=`;
-4. restart the server.
+3. paste it into the **AcoustID key** box in the app and press *Save the key*.
+
+The box opens by itself when there is no key, and the **AcoustID** button at the
+top right opens it again at any time — which is what you need when the key you
+typed turns out to be the wrong one.
+
+Pressing *Save* asks AcoustID whether the key is good **before** writing it
+down, so a mistyped key is caught there and then instead of at the next
+analysis. If AcoustID cannot be reached the key is saved anyway and the box says
+so: not being able to check is not the same as being wrong.
+
+The key is written into the `.env` file next to the app, which is where it lived
+before and where the installer preserves it across updates — the box only saves
+you from having to find that file. It takes effect on the next song you analyse;
+nothing needs restarting.
 
 Without a key everything else works normally: the track card simply reports that
 recognition is off.
