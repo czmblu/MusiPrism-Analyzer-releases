@@ -18,7 +18,7 @@
 <sub>There is also a page to look at instead of read:
 **[czmblu.github.io/MusiPrism-Analyzer-releases](https://czmblu.github.io/MusiPrism-Analyzer-releases/)**</sub>
 
-[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.11](https://img.shields.io/badge/latest-v1.0.11-2f81f7?style=for-the-badge)
+[![Download the installer for Windows, 3 MB](https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-installer%20for%20Windows%20%C2%B7%203%20MB-2ea44f?style=for-the-badge)](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest/download/MusiPrism-Analyzer-Setup.exe) ![Latest version 1.0.12](https://img.shields.io/badge/latest-v1.0.12-2f81f7?style=for-the-badge)
 
 Run it and it works out what your machine can actually use. If it finds an
 NVIDIA card that can run the analysis, it asks whether you want to; if there is
@@ -59,9 +59,9 @@ that put together, so it waits until you ask for it — by switching to the full
 view, or with the button on the instruments card.
 
 It runs entirely on your computer: the audio is never uploaded to any external
-service. The only network requests are the acoustic fingerprint lookup on
-AcoustID and MusicBrainz (metadata only, not the audio) and the model downloads
-on first start.
+service. The only network requests are the lookups on MusicBrainz, ListenBrainz
+and LRCLIB (names and titles, never the audio) and the model downloads on first
+start.
 
 > This repository carries the **downloads and the updates**. The source code is
 > in a private repository: release attachments of a private repository cannot be
@@ -79,8 +79,10 @@ on first start.
   tempo and key *change* over the track.
 - **Song structure**: sections found on bar boundaries, with the repeated ones
   marked — that is how a chorus shows itself.
-- **Genre** from MAEST, trained on the Discogs taxonomy of 400 styles.
-- **Artist and album** from the Chromaprint fingerprint (AcoustID + MusicBrainz).
+- **Genre and styles** from a model built here: a frozen AST listens, and a
+  layer trained on freely-licensed music answers with 9 genres and 60 styles.
+- **Artist and title** read from the file's own tags, with album and year filled
+  in from MusicBrainz. No key, nothing to configure.
 - **Synced lyrics** from LRCLIB, scrolling and highlighting as you listen.
 - **Chords over time**, laid out bar by bar as a chart you can play from, with
   the chord you are hearing lighting up as the song goes.
@@ -105,7 +107,7 @@ on first start.
 
 </div>
 
-## Download — version 1.0.11
+## Download — version 1.0.12
 
 **The installer** is 3 MB and carries none of the program: it works out which
 edition you need, downloads it and unpacks it. It installs under your own user,
@@ -118,7 +120,7 @@ If a copy is already installed it says so, and where, and asks whether to go on.
 Answering no ends the installation and changes nothing. Answering yes installs
 over it, in the same folder: the new version is downloaded and unpacked first
 and the old one removed only once it has arrived, so a download that fails
-leaves you with the program you had. Your AcoustID key is carried across.
+leaves you with the program you had. Your settings file is carried across.
 
 Behind it, the [latest release](https://github.com/czmblu/MusiPrism-Analyzer-releases/releases/latest)
 carries **two ready-to-run packages**: Python, every library, the models and
@@ -139,8 +141,8 @@ Both can also be downloaded by hand from the release and unpacked without the
 installer — the folder they contain runs from anywhere, including a USB drive.
 Windows may warn that these files are unsigned: choose *More info → Run anyway*.
 
-Artist and album recognition stays off until you add a free AcoustID key — see
-[The AcoustID key](#the-acoustid-key). Everything else works out of the box.
+Everything works out of the box: there is no key to request and nothing to
+configure.
 
 The timings are measured on the same 2'16" song with six stems: about a minute on
 an RTX 5070 Ti, 69 seconds on a Ryzen 7 7800X3D. That second figure used to be
@@ -160,7 +162,7 @@ When it comes back, a window tells you what changed — once, on the first start
 of the new version. That is the moment it is worth reading; before installing,
 what you want to know is only whether to install.
 
-Your AcoustID key and the analyses on disk are left alone. If the download or
+Your settings file and the analyses on disk are left alone. If the download or
 the copy fails, every replaced file is put back and the app keeps working as it
 was. A copy running from the source is never touched — it carries a `.git`
 folder, and overwriting it would throw away uncommitted work.
@@ -364,10 +366,16 @@ not to pay for six images that often nobody looks at.
 BPM, key (with the confidence index of the estimate), average level, dynamic
 range and spectral brightness.
 
-**Genre, as bars or as a pie.** Estimated with MAEST, a transformer trained on
-the Discogs taxonomy of 400 styles. The prediction is the average over several
-30-second chunks, so that an isolated chorus or solo does not determine the
-result on its own.
+**Genre, as bars or as a pie.** Worked out by two pieces: **AST**, a transformer
+from MIT that turns the sound into numbers, and a layer trained here on Free
+Music Archive tracks whose licence allows commercial use. It answers with nine
+genres and, underneath them, sixty styles — Dubstep, Chiptune, Soundtrack,
+Ambient. The prediction is the average over several stretches of the track, so
+that an isolated chorus or solo does not determine the result on its own.
+
+The styles are judged one at a time, because a track is Ambient and Soundtrack
+and Electronic all at once: their scores do not add up to 100%, and the card
+says so.
 
 Bars are the default view because comparing aligned lengths is more precise than
 comparing angles; the pie answers a different question — how much each genre
@@ -375,8 +383,16 @@ weighs on the whole — and always includes the "Other genres" slice. Without th
 remainder the top five genres would cover about 80% of the score but would be
 drawn as if they were 100%, showing inflated proportions.
 
-**Artist and album.** Chromaprint acoustic fingerprint, looked up on AcoustID
-and enriched with MusicBrainz metadata.
+**Artist and title.** Read from the file's own tags, with `ffprobe`. Album,
+year and the other releases are then filled in from MusicBrainz, when the track
+is catalogued under that name. Nothing is sent but the two names, and there is
+no key to request.
+
+A file with no tags is not recognised at all, and that is the honest price of
+this: an acoustic fingerprint would have recognised it from the sound. What is
+gained is that music no archive has ever heard of — game soundtracks, remixes,
+things made at home — now shows its name, where the fingerprint answered "not
+found".
 
 **Synced lyrics.** From LRCLIB, an open archive with no key: the lines arrive
 with their timestamp and scroll along, highlighting themselves as you listen.
@@ -468,37 +484,14 @@ ones already there.
 side on tempo, key, length, genre, level, dynamics and brightness, with the
 differences highlighted.
 
-**Five similar tracks.** From the recognised artist it walks, through Deezer's
-public APIs, to the related artists, and from each takes the most listened
-track: five different artists give five varied recommendations instead of five
-pieces from the same record. Every recommendation has cover art, a 30-second
-preview playable in the page and a link to the track.
+**Five similar tracks.** From ListenBrainz, which publishes what people listen
+to: these are the tracks played alongside yours by the same listeners. Each one
+has its cover, from the Cover Art Archive, and a link to it.
 
-If the track is not recognised you can type artist and title by hand, so the
-recommendations work even without the AcoustID key.
-
-## The AcoustID key
-
-Artist and album recognition is the only feature that needs configuration. The
-key is **free and unlimited**:
-
-1. register at <https://acoustid.org/new-application>;
-2. copy the key you get;
-3. paste it into the **AcoustID key** box in the app and press *Save the key*.
-
-The box opens by itself when there is no key, and the **AcoustID** button at the
-top right opens it again at any time — which is what you need when the key you
-typed turns out to be the wrong one.
-
-Pressing *Save* asks AcoustID whether the key is good **before** writing it
-down, so a mistyped key is caught there and then instead of at the next
-analysis. If AcoustID cannot be reached the key is saved anyway and the box says
-so: not being able to check is not the same as being wrong.
-
-The key is written into the `.env` file next to the app, which is where it lived
-before and where the installer preserves it across updates — the box only saves
-you from having to find that file. It takes effect on the next song you analyse;
-nothing needs restarting.
+When a track is too new or too little played for anyone to have listened to it
+next to anything else, the card falls back to **five similar artists** — that
+index reaches much further down — and says so. And if the tags are missing or
+wrong, artist and title can be typed by hand right there.
 
 Without a key everything else works normally: the track card simply reports that
 recognition is off.
@@ -526,14 +519,16 @@ correction kicks in, the card also reports the raw reading.
 share the same notes). The confidence index next to the estimate flags the
 uncertain cases.
 
-**Recommendations start from the artist, not from the sound.** There is no way
-to deduce from the audio that one song resembles another without a catalogue to
+**Recommendations start from the name, not from the sound.** There is no way to
+deduce from the audio that one song resembles another without a catalogue to
 compare it against: what is used here is what people actually listen to. It
-follows that the recommendations are worth as much as the artist's popularity in
-the Deezer catalogue, and that **they do not work on classical music**: there
-the catalogued name is the performer's, not the composer's. In that case the app
-says it found nothing instead of making things up: an artist matched by mistake
-produces five wrong recommendations with the same confidence as five right ones.
+follows that the recommendations are worth as much as how much the track is
+played, and that they thin out at the edges — a piece nobody has listened to
+alongside anything else has nothing to be compared with, which is why the card
+falls back to the artist. On classical music they are weakest of all: there the
+catalogued name is the performer's, not the composer's. The app says it found
+nothing rather than making things up — a name matched by mistake produces five
+wrong recommendations with the same confidence as five right ones.
 
 **Telling whether there is a singer is not trivial.** In an instrumental track
 the vocal stem is not empty: it contains the bleed of the other instruments, and
@@ -596,18 +591,18 @@ or package or the source code inside it. See [LICENSE](LICENSE).
 Asking is the whole point of that sentence, and the answer is not automatically
 no: write to **[papeoalessio@gmail.com](mailto:papeoalessio@gmail.com)**.
 
-Everything it carries — Python, PyTorch, Demucs, the models, ffmpeg,
-Chromaprint — keeps its own licence, and this one takes nothing away from those.
-Three things there are worth knowing:
+Everything it carries — Python, PyTorch, Demucs, the models, ffmpeg — keeps its
+own licence, and this one takes nothing away from those. Three things there are
+worth knowing:
 
 - the bundled **ffmpeg is a GPL-3.0 build**, so whoever receives it can get its
   source;
-- the **genre model is CC BY-NC-SA 4.0**, which means the package as it ships
-  **cannot be used commercially**, by anyone — and Deezer, which supplies the
-  similar tracks, says the same about its API, so that is two independent
-  reasons and removing one would not remove the other;
-- four libraries are **LGPL** — Chromaprint with the ffmpeg built into it, LAME,
-  libsoxr and libsndfile — and each is named with the place its source lives.
+- the **genre model is ours**, built on AST (BSD-3-Clause) and trained only on
+  music whose own licence allows commercial use. Until 1.0.11 the model was
+  MAEST, CC BY-NC-SA, and the package could not be used commercially by anyone —
+  that is gone, together with the Deezer terms that said the same thing;
+- three libraries are **LGPL** — LAME, libsoxr and libsndfile — and each is
+  named with the place its source lives.
 
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) is the full list: what is
 inside, under what terms, and where its source is. It ships inside the package
